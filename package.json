@@ -1,0 +1,29 @@
+{
+  "name": "discord-member-counter-bot",
+  "version": "1.0.0",
+  "description": "A Discord bot that counts server members and bots.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "check": "node --check src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ETERNALiPEACE/PIEAcode.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "member-counter"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ETERNALiPEACE/PIEAcode/issues"
+  },
+  "homepage": "https://github.com/ETERNALiPEACE/PIEAcode#readme",
+  "dependencies": {
+    "discord.js": "^14.26.4",
+    "dotenv": "^17.4.2"
+  }
+}
