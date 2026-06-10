@@ -35,8 +35,9 @@ def _f_sin(x):
     return np.sin(np.pi * x)
 
 
-def _f_liniowa(x):
-    return np.asarray(x, dtype=float)
+def _f_kwadratowa(x):
+    x_arr = np.asarray(x, dtype=float)
+    return x_arr**2
 
 
 ZADANIA = [
@@ -62,10 +63,10 @@ ZADANIA = [
         "nr": 3,
         "a": 0.0,
         "b": 2.0,
-        "f_sym": x_sym,
-        "f": _f_liniowa,
-        "etykieta_f": "x",
-        "F_dane": -x_sym**3 / 6,
+        "f_sym": x_sym**2,
+        "f": _f_kwadratowa,
+        "etykieta_f": "x^2",
+        "F_dane": -x_sym**4 / 12,
     },
 ]
 
@@ -296,7 +297,8 @@ def rysuj_wszystkie(zadanie, wezly, u_num, ana, A_mat, n_siatki):
     # 4) zbieznosc log-log
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.loglog(hs, bledy, "o-", lw=2, ms=7, color="steelblue", label="blad numeryczny")
-    ax.loglog(hs, hs**2 * (bledy[0] / hs[0] ** 2), "k--", alpha=0.5, label="O(h²)")
+    if bledy[0] > 0:
+        ax.loglog(hs, hs**2 * (bledy[0] / hs[0] ** 2), "k--", alpha=0.5, label="O(h²)")
     ax.set(xlabel="krok h", ylabel="max |u_num - u_dokladne|", title="Zbieznosc metody")
     ax.grid(True, which="both", alpha=0.3)
     ax.legend()
@@ -438,7 +440,7 @@ def rozwiaz_zadanie(zadanie, n_siatki=N):
     for n_podzialow in [4, 8, 16, 32, 64]:
         w, hn, _, _, un = rozwiaz_dyskretnie(zadanie["f"], a, b, n_podzialow)
         e = np.max(np.abs(un - u_z_wzoru(ana, w)))
-        stosunek = f"{poprzedni / e:.1f}x" if poprzedni else "—"
+        stosunek = f"{poprzedni / e:.1f}x" if poprzedni is not None and e > 0 else "—"
         wiersze_zb.append([str(n_podzialow), f"{hn:.5f}", f"{e:.2e}", stosunek])
         poprzedni = e
     _tabela(["N", "h", "max |blad|", "przysp. vs poprz."], wiersze_zb)
